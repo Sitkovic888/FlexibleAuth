@@ -1,9 +1,6 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { Button } from "../ui/Button";
-import NavBar from "../NavBar";
+import { useNavigate, Outlet } from "react-router-dom";
 import "./Layout.css";
+import { NavBar, Button } from "@/components";
 
 export const Layout = () => {
   const navigate = useNavigate();

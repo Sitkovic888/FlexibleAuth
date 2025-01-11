@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
+  Input,
+  Label,
+} from "@/components";
 import { UserLoginDto } from "@/shared/models/user-login.interface";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";

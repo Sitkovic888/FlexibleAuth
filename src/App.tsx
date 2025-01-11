@@ -1,5 +1,5 @@
 import { UserProvider } from "./hooks/useAuth";
-import { Layout } from "./components/Layout/Layout";
+import { Layout } from "@/components";
 
 function App() {
   return (
