@@ -10,9 +10,9 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="/login" element={<LoginPage />} />
           <Route index element={<Home />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/counter" element={<Counter />} />
         <Route path="/fetchData" element={<FetchData />} />
       </Routes>

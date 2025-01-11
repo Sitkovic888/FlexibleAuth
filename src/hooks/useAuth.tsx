@@ -5,33 +5,31 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { UserProfile, UserProfileToken } from "../Models/User";
 import { useNavigate } from "react-router";
-import { loginApi, registerApi } from "../Services/AuthService";
+import { userLoginApi } from "@/shared/services/authApiService";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { UserLoginDto } from "@/shared/models/user-login.interface";
+import { UserIdentity } from "@/shared/models/user-identity";
 
-type UserContextType = {
-  user: UserProfile | null;
-  token: string | null;
-  registerUser: (
-    email: string,
-    userName: string,
-    password: string
-  ) => Promise<void>;
-  loginUser: (userName: string, password: string) => Promise<void>;
+type UserIdentityContextType = {
+  user: UserIdentity | null;
+  registerUser: (loginUser: UserLoginDto) => Promise<void>;
+  loginUser: (loginUserData: UserLoginDto) => Promise<void>;
   logoutUser: () => void;
   isLoggedIn: () => boolean;
 };
 
-type Props = { children: ReactNode };
+const userContext = createContext<UserIdentityContextType>(
+  {} as UserIdentityContextType
+);
 
-const userContext = createContext<UserContextType>({} as UserContextType);
+type Props = { children: ReactNode };
 
 export const UserProvider = ({ children }: Props): ReactElement => {
   const navigate = useNavigate();
-  const [token, setToken] = useState<string | null>(null);
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<UserIdentity | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -46,54 +44,44 @@ export const UserProvider = ({ children }: Props): ReactElement => {
     setIsReady(true);
   }, []);
 
-  const registerUser = async (
-    email: string,
-    userName: string,
-    password: string
-  ) => {
-    await registerApi(email, userName, password)
-      .then((res) => {
-        const resData = res?.data;
-        if (resData) {
-          localStorage.setItem("token", resData.token);
-
-          const userObj = {
-            email: resData.email,
-            userName: resData.userName,
-          };
-
-          localStorage.setItem("user", JSON.stringify(userObj));
-
-          setToken(resData.token);
-          setUser(userObj);
-
-          toast.success("Succesfull login.");
-
-          navigate("/search");
-        }
-      })
-      .catch((e) => toast.warning("A server error occured."));
+  const registerUser = async (userRegistration: UserLoginDto) => {
+    // await registerApi(email, userName, password)
+    //   .then((res) => {
+    //     const resData = res?.data;
+    //     if (resData) {
+    //       localStorage.setItem("token", resData.token);
+    //       const userObj = {
+    //         email: resData.email,
+    //         userName: resData.userName,
+    //       };
+    //       localStorage.setItem("user", JSON.stringify(userObj));
+    //       setToken(resData.token);
+    //       setUser(userObj);
+    //       toast.success("Succesfull login.");
+    //       navigate("/search");
+    //     }
+    //   })
+    //   .catch((e) => toast.warning("A server error occured."));
   };
 
-  const loginUser = async (userName: string, password: string) => {
-    await loginApi(userName, password)
+  const loginUser = async (userLogin: UserLoginDto): Promise<void> => {
+    console.log("loginUser", userLogin);
+    await userLoginApi(userLogin)
       .then((res) => {
-        const resData = res?.data;
+        const resData = res;
         if (resData) {
           localStorage.setItem("token", resData.token);
 
-          const userObj = {
+          const userObj: UserIdentity = {
             email: resData.email,
             userName: resData.userName,
+            token: resData.token,
           };
 
-          localStorage.setItem("user", JSON.stringify(userObj));
-
-          setToken(resData.token);
+          setToken(userObj.token);
           setUser(userObj);
 
           toast.success("Succesfull Login.");
-
           navigate("/search");
         }
       })
@@ -114,11 +102,12 @@ export const UserProvider = ({ children }: Props): ReactElement => {
 
   return (
     <userContext.Provider
-      value={{ user, token, registerUser, loginUser, logoutUser, isLoggedIn }}
+      value={{ user, registerUser, loginUser, logoutUser, isLoggedIn }}
     >
       {isReady ? children : null}
     </userContext.Provider>
   );
 };
 
-export const useAuth = (): UserContextType => React.useContext(userContext);
+export const useAuth = (): UserIdentityContextType =>
+  React.useContext(userContext);

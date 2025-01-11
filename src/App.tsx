@@ -1,9 +1,12 @@
-import { Layout } from "@/components/Layout";
+import { UserProvider } from "./hooks/useAuth";
+import { Layout } from "./components/Layout";
 
 function App() {
   return (
     <>
-      <Layout />
+      <UserProvider>
+        <Layout />
+      </UserProvider>
     </>
   );
 }
