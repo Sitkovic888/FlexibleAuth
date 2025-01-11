@@ -68,7 +68,7 @@ export const UserProvider = ({ children }: Props): ReactElement => {
     console.log("loginUser", userLogin);
     await userLoginApi(userLogin)
       .then((res) => {
-        const resData = res;
+        const resData = res.data;
         if (resData) {
           localStorage.setItem("token", resData.token);
 
@@ -82,10 +82,10 @@ export const UserProvider = ({ children }: Props): ReactElement => {
           setUser(userObj);
 
           toast.success("Succesfull Login.");
-          navigate("/search");
+          navigate("/home");
         }
       })
-      .catch((e) => toast.warning("A server error occured."));
+      .catch((e) => toast.warning("A server error occured.", e.message));
   };
 
   const isLoggedIn = () => {

@@ -1,6 +1,7 @@
 import { useNavigate, Outlet } from "react-router-dom";
 import "./Layout.css";
 import { NavBar, Button } from "@/components";
+import { ToastContainer } from "react-toastify";
 
 export const Layout = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ export const Layout = () => {
       </header>
       <Outlet />
       <footer id="layout-footer">Footer</footer>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };
