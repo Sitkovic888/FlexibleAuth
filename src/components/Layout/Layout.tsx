@@ -1,8 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/Button";
-import NavBar from "./NavBar";
+import { Button } from "../ui/Button";
+import NavBar from "../NavBar";
+import "./Layout.css";
 
 export const Layout = () => {
   const navigate = useNavigate();
@@ -16,18 +17,14 @@ export const Layout = () => {
   }
 
   return (
-    <>
-      <div className="w-full h-screen grid grid-rows-[max-content,1fr,max-content]">
-        <header>
-          <NavBar />
-          <Button onClick={navigateToCounter}>navigateToCounter</Button>
-          <Button onClick={navigateToFetchData}>navigateToFetchData</Button>
-        </header>
-        <Outlet />
-        <footer className="flex justify-center bg-red-800 text-white">
-          Footer
-        </footer>
-      </div>
-    </>
+    <div id="layout-div">
+      <header>
+        <NavBar />
+        <Button onClick={navigateToCounter}>navigateToCounter</Button>
+        <Button onClick={navigateToFetchData}>navigateToFetchData</Button>
+      </header>
+      <Outlet />
+      <footer id="layout-footer">Footer</footer>
+    </div>
   );
 };
