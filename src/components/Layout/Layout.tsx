@@ -15,15 +15,17 @@ export const Layout = () => {
   }
 
   return (
-    <div id="layout-div">
-      <header>
-        <NavBar />
-        <Button onClick={navigateToCounter}>navigateToCounter</Button>
-        <Button onClick={navigateToFetchData}>navigateToFetchData</Button>
-      </header>
-      <Outlet />
-      <footer id="layout-footer">Footer</footer>
-      <ToastContainer position="bottom-right" />
+    <div className="layout">
+      <aside className="bg-green-500"></aside>
+      <div className="layout-main">
+        <header>
+          <NavBar />
+          <Button onClick={navigateToCounter}>navigateToCounter</Button>
+          <Button onClick={navigateToFetchData}>navigateToFetchData</Button>
+        </header>
+        <Outlet />
+        <ToastContainer position="bottom-right" />
+      </div>
     </div>
   );
 };
