@@ -1,6 +1,6 @@
 import { useNavigate, Outlet } from "react-router-dom";
 import "./Layout.css";
-import { NavBar, Button } from "@/components";
+import { NavBar, Button, Sidebar } from "@/components";
 import { ToastContainer } from "react-toastify";
 
 export const Layout = () => {
@@ -16,8 +16,8 @@ export const Layout = () => {
 
   return (
     <div className="layout">
-      <aside className="bg-green-500"></aside>
-      <div className="layout-main">
+      <Sidebar />
+      <div className="layout_main">
         <header>
           <NavBar />
           <Button onClick={navigateToCounter}>navigateToCounter</Button>
