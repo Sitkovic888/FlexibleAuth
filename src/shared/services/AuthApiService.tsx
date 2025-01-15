@@ -1,34 +1,34 @@
 import { UserLoginDto } from "@/shared/models/user-login.interface";
 import { UserIdentity } from "../models/user-identity";
-import axios, { AxiosResponse } from "axios";
-import { toast } from "react-toastify";
-import { ProblemDetails } from "../models/problem-details-interface";
+import axios from "axios";
+import { ProblemDetails } from "../models/problem-details.interface";
 
 const apiUrl = import.meta.env.VITE_BACK_END_URL;
 
-const unknownError: ProblemDetails = {
-  status: "500",
-  type: "Internal server error",
-  details: "Internal server error",
-};
+export interface HttpResponse<TResponse, TError> {
+  response: TResponse;
+  error: TError;
+}
 
 export const userLoginApi = async (
   userLogin: UserLoginDto
-): Promise<AxiosResponse<UserIdentity, ProblemDetails>> => {
+): Promise<HttpResponse<UserIdentity | null, ProblemDetails | unknown>> => {
   const userLoginApiUrl = apiUrl + "account/login";
+  const httpResponse = {} as HttpResponse<
+    UserIdentity,
+    ProblemDetails | unknown
+  >;
   try {
     const response = await axios.post<UserIdentity>(userLoginApiUrl, userLogin);
-    return response;
+    httpResponse.response = response.data;
   } catch (error) {
-    if (error as ProblemDetails) {
-      return Promise.reject(error);
-    } else if (axios.isAxiosError(error)) {
+    if (axios.isAxiosError(error)) {
       const errorData = error.response?.data;
-      toast.error(errorData || error.message);
+      httpResponse.error = (errorData as ProblemDetails) ?? errorData;
     } else {
-      toast.error((error as Error).message);
+      httpResponse.error = error;
     }
   }
 
-  return Promise.reject(unknownError);
+  return httpResponse;
 };

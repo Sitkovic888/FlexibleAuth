@@ -5,6 +5,7 @@ export default function NavBar() {
   const useAuthContext = useAuth();
 
   const linkClassName = "text-white font-bold hover:text-gray-200";
+
   return (
     <nav className="flex items-center justify-between bg-red-800 w-full h-[13vh] px-[4vw]">
       <Link to="/" className={linkClassName}>
@@ -15,8 +16,14 @@ export default function NavBar() {
           Log in
         </Link>
       ) : (
-        <a onClick={useAuthContext.logoutUser} className={linkClassName}>
-          Log in
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            useAuthContext.logoutUser();
+          }}
+          className={linkClassName}
+        >
+          Log out
         </a>
       )}
     </nav>

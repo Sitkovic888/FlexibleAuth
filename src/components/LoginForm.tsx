@@ -12,12 +12,14 @@ import {
 import { UserLoginDto } from "@/shared/models/user-login.interface";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
 
 export default function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const useAuthObj = useAuth();
+  const [error, setError] = useState<string>("");
 
   const {
     register,
@@ -31,7 +33,13 @@ export default function LoginForm({
       email: form.email,
       password: form.password,
     };
-    await useAuthObj.loginUser(newUserLogin);
+
+    try {
+      await useAuthObj.loginUser(newUserLogin);
+    } catch (err) {
+      const errorMessage = (err as Error)?.message ?? "Failed to log in.";
+      setError(errorMessage);
+    }
   }
 
   const usernameId = "username";
@@ -80,6 +88,16 @@ export default function LoginForm({
                   {...register(passwordId, { required: true })}
                 />
               </div>
+              {error && (
+                <Label
+                  className={cn(
+                    "flex justify-center items-center text-center text-red-500",
+                    className
+                  )}
+                >
+                  {error}
+                </Label>
+              )}
               <Button type="submit" className="w-full">
                 Login
               </Button>
