@@ -1,12 +1,11 @@
-import { link } from "fs";
 import "./Sidebar.css";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const sidebarItems = [
   {
     icon: "",
     name: "Counter",
-    linkTo: "/Users",
+    linkTo: "/Counter",
   },
   {
     icon: "",
@@ -31,20 +30,14 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-
   return (
     <aside className="layout_sidebar">
       <div className="layout_sidebar-header">Flexible Auth</div>
       <ul className="layout_sidebar-list">
         {sidebarItems.map(({ name, linkTo }) => {
           return (
-            <li
-              key={name}
-              className="layout_sidebar-list-item"
-              onClick={() => navigate(linkTo)}
-            >
-              {name}
+            <li key={name} className="layout_sidebar-list-item">
+              <Link to={linkTo}>{name}</Link>
             </li>
           );
         })}
