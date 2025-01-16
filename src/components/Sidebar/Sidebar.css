@@ -1,0 +1,25 @@
+.layout_sidebar {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-sidebar-primary) 0%,
+    var(--color-sidebar-secondary) 70%
+  );
+  color: #fff;
+}
+
+.layout_sidebar-header {
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  font-weight: bolder;
+}
+
+.layout_sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.layout_sidebar-list-item {
+  display: flex;
+  padding: 0.75rem 1rem;
+}
